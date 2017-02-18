@@ -5,7 +5,7 @@ The input is the path to your project, the output will be a basic excel file wit
 
 <h3>Usage:</h3>
 <p> 1) Create an executable jar file</p>
-<p> 2) java -jar << your_jar_file_name >>.jar << path_to_your_project >> </p>
+<p> 2) java -jar <_your_jar_file_name_>.jar <_path_to_your_project_> </p>
 
 Have fun, any comments are welcome!
 
