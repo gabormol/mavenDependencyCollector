@@ -18,6 +18,8 @@ public class App
 		List<MvnDep> dependencies = new ArrayList<>();
 		List<String> output = new ArrayList<>();
 		
+		ExcelWriter xlsWriter = new ExcelWriter();
+		
 		for (String f : fileNames){
 			//System.out.println(f);
 			
@@ -33,6 +35,7 @@ public class App
 		
 		System.out.println("Test dependencies removed, remaining dependencies: " + dependencies.size());
 		
+		xlsWriter.createExcel(dependencies);
 		
 		for (MvnDep dep : dependencies){
 				
