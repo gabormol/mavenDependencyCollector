@@ -10,11 +10,15 @@ public class MvnDep {
 		
 	}
 	
-	public MvnDep (String groupId, String atrifact, String scope, String version){
+	public MvnDep (String groupId, String artifact, String scope, String version){
 		this.groupId = groupId;
 		this.artifact = artifact;
 		this.scope = scope;
 		this.version = version;
+	}
+	
+	public String compareString(){
+		return groupId+artifact+scope+version;
 	}
 	
 	public String getGroupId() {

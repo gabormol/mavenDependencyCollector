@@ -35,15 +35,19 @@ public class App
 		
 		System.out.println("Test dependencies removed, remaining dependencies: " + dependencies.size());
 		
+		dependencies = Utils.removeDuplicates(dependencies);
+		
+		System.out.println("Duplicated dependencies removed, remaining dependencies: " + dependencies.size());
+		
 		xlsWriter.createExcel(dependencies);
 		
-		for (MvnDep dep : dependencies){
+		/*for (MvnDep dep : dependencies){
 				
 			output.add(dep.getGroupId() + " " + dep.getArtifact() 
 				+ " " + dep.getVersion() + "scope: " + dep.getScope());
 			
 		}
 		
-		System.out.println(output.toString());
+		System.out.println(output.toString());*/
     }
 }

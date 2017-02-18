@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import net.gabormol.mvndep.mavenDependencyCollector.model.MvnDep;
@@ -58,5 +60,14 @@ public class Utils {
 		} else {
 			return true;
 		}
+	}
+	
+	public static List<MvnDep> removeDuplicates(List<MvnDep> depList){
+		List<MvnDep> nonDuplicatedDependencies = depList.stream()
+				   .<Map<String, MvnDep>> collect(HashMap::new,(m,e)->m.put(e.compareString(), e), Map::putAll)
+				   .values()
+				   .stream()
+				   .collect(Collectors.toList());
+		return nonDuplicatedDependencies;
 	}
 }
