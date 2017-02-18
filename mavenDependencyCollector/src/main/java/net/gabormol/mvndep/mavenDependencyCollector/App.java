@@ -16,13 +16,11 @@ public class App
 		System.out.println("POM files found: " + fileNames.size());
 		
 		List<MvnDep> dependencies = new ArrayList<>();
-		List<String> output = new ArrayList<>();
 		
 		ExcelWriter xlsWriter = new ExcelWriter();
 		
 		for (String f : fileNames){
-			//System.out.println(f);
-			
+						
 			PomReader aPomReader = new PomReader(f);
 			
 			dependencies.addAll(aPomReader.getAllDependenciesFromPom());
@@ -41,13 +39,5 @@ public class App
 		
 		xlsWriter.createExcel(dependencies);
 		
-		/*for (MvnDep dep : dependencies){
-				
-			output.add(dep.getGroupId() + " " + dep.getArtifact() 
-				+ " " + dep.getVersion() + "scope: " + dep.getScope());
-			
-		}
-		
-		System.out.println(output.toString());*/
     }
 }

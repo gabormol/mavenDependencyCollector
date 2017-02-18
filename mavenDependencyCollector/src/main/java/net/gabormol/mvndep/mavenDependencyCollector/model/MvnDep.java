@@ -17,6 +17,7 @@ public class MvnDep {
 		this.version = version;
 	}
 	
+	// It returns a unique string needed for filtering the duplicates
 	public String compareString(){
 		return groupId+artifact+scope+version;
 	}

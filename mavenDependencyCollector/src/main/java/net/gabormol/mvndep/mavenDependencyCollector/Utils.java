@@ -20,7 +20,6 @@ public class Utils {
 	                getFileNames(fileNames, path);
 	            } else {
 	                fileNames.add(path.toAbsolutePath().toString());
-	                //System.out.println(path.getFileName());
 	            }
 	        }
 	    } catch(IOException e) {

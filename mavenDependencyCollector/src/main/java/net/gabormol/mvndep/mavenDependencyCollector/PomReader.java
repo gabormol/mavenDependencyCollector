@@ -23,7 +23,6 @@ public class PomReader {
 	private DocumentBuilderFactory dbf;
 	private DocumentBuilder db;
     private Document document;
-    private List<MvnDep> depList = new ArrayList();
 	
 	public PomReader (String path){
 		this.filePath = path;
@@ -34,32 +33,24 @@ public class PomReader {
     
     public List<MvnDep> getAllDependenciesFromPom(){
     	
-    	List<MvnDep> depList = new ArrayList();
+    	List<MvnDep> depList = new ArrayList<>();
     	
     	try {	
     		db = dbf.newDocumentBuilder();
     		document = db.parse(file);
     		document.getDocumentElement().normalize();
 		
-    		//System.out.println("Root element :" + document.getDocumentElement()
-			//	.getNodeName());
     		NodeList nList = document.getElementsByTagName("dependency");
-		
-    		//System.out.println("----------------------------");
 		
     		for (int temp = 0; temp < nList.getLength(); temp++) {
 
     			Node nNode = nList.item(temp);
     			MvnDep aDependency = new MvnDep();
 
-    			//System.out.println("\nCurrent Element :" + nNode.getNodeName());
-	        
     			Element eElement = (Element) nNode;
 	        
     			String groupId = eElement.getElementsByTagName("groupId").item(0).getTextContent();
-    			//Optional.ofNullable( groupId ).orElse( "" );
     			String artifactId = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
-    			//Optional.ofNullable( artifactId ).orElse( "" );
     			String scope;
     			String version;
 	        
@@ -75,11 +66,6 @@ public class PomReader {
     			aDependency.setArtifact(artifactId);
     			aDependency.setScope(scope);
     			aDependency.setVersion(version);
-	        
-    			//System.out.println("groupId : " + groupId);
-    			//System.out.println("artifactId : " + artifactId);
-    			//System.out.println("scope : " + scope);
-    			//System.out.println("version : " + version);
     			
     			depList.add(aDependency);
     		}
