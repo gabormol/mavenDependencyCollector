@@ -32,7 +32,7 @@ public class PomReader {
 	}
 	
     
-    public List<MvnDep> getAllDependencies(){
+    public List<MvnDep> getAllDependenciesFromPom(){
     	
     	List<MvnDep> depList = new ArrayList();
     	
@@ -41,18 +41,18 @@ public class PomReader {
     		document = db.parse(file);
     		document.getDocumentElement().normalize();
 		
-    		System.out.println("Root element :" + document.getDocumentElement()
-				.getNodeName());
+    		//System.out.println("Root element :" + document.getDocumentElement()
+			//	.getNodeName());
     		NodeList nList = document.getElementsByTagName("dependency");
 		
-    		System.out.println("----------------------------");
+    		//System.out.println("----------------------------");
 		
     		for (int temp = 0; temp < nList.getLength(); temp++) {
 
     			Node nNode = nList.item(temp);
     			MvnDep aDependency = new MvnDep();
 
-    			System.out.println("\nCurrent Element :" + nNode.getNodeName());
+    			//System.out.println("\nCurrent Element :" + nNode.getNodeName());
 	        
     			Element eElement = (Element) nNode;
 	        
@@ -76,13 +76,15 @@ public class PomReader {
     			aDependency.setScope(scope);
     			aDependency.setVersion(version);
 	        
-    			System.out.println("groupId : " + groupId);
-    			System.out.println("artifactId : " + artifactId);
-    			System.out.println("scope : " + scope);
-    			System.out.println("version : " + version);
+    			//System.out.println("groupId : " + groupId);
+    			//System.out.println("artifactId : " + artifactId);
+    			//System.out.println("scope : " + scope);
+    			//System.out.println("version : " + version);
     			
     			depList.add(aDependency);
     		}
+    		System.out.println("Found " + depList.size() + " dependencies in: "
+    				+ "     " + filePath);
     		return depList;
     	} catch (ParserConfigurationException | SAXException | IOException e) {
     		// TODO Auto-generated catch block

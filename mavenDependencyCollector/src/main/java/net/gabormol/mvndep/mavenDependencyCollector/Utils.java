@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import net.gabormol.mvndep.mavenDependencyCollector.model.MvnDep;
+
 public class Utils {
 
 	public static List<String> getFileNames(List<String> fileNames, Path dir) {
@@ -22,6 +24,7 @@ public class Utils {
 	    } catch(IOException e) {
 	        e.printStackTrace();
 	    }
+	    
 	    return filterNotPoms(fileNames);
 	}
 	
@@ -38,6 +41,22 @@ public class Utils {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public static List<MvnDep> removeTestDepencency(List<MvnDep> depList){
+		List<MvnDep> retRes = depList.stream()
+				.filter(dep -> isNotTestDependency(dep))
+				.collect(Collectors.toList());
+		
+		return retRes;
+	}
+	
+	private static boolean isNotTestDependency(MvnDep dependency){
+		if (dependency.getScope().contains("test")){
+			return false;
+		} else {
+			return true;
 		}
 	}
 }

@@ -13,13 +13,34 @@ public class App
     	List<String> fileNames = new ArrayList<>();
 		fileNames = Utils.getFileNames(fileNames, Paths.get(args[0]));
 		
+		System.out.println("POM files found: " + fileNames.size());
+		
+		List<MvnDep> dependencies = new ArrayList<>();
+		List<String> output = new ArrayList<>();
+		
 		for (String f : fileNames){
-			System.out.println(f);
+			//System.out.println(f);
 			
 			PomReader aPomReader = new PomReader(f);
 			
-			List<MvnDep> dependencies = aPomReader.getAllDependencies();
+			dependencies.addAll(aPomReader.getAllDependenciesFromPom());
 			
 		}
+		
+		System.out.println("Dependencies found: " + dependencies.size());
+		
+		dependencies = Utils.removeTestDepencency(dependencies);
+		
+		System.out.println("Test dependencies removed, remaining dependencies: " + dependencies.size());
+		
+		
+		for (MvnDep dep : dependencies){
+				
+			output.add(dep.getGroupId() + " " + dep.getArtifact() 
+				+ " " + dep.getVersion() + "scope: " + dep.getScope());
+			
+		}
+		
+		System.out.println(output.toString());
     }
 }
