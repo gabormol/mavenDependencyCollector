@@ -1,9 +1,13 @@
 package net.gabormol.mvndep.mavenDependencyCollector;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -77,6 +81,45 @@ public class PomReader {
     		e.printStackTrace();
     		return null;
     	}
+    }
+    
+    public Map<String, String> getAllPropertiesFromPom(){
+    	Map<String, String> propList = new HashMap<>();
+    	
+    	try {	
+    		db = dbf.newDocumentBuilder();
+    		document = db.parse(file);
+    		document.getDocumentElement().normalize();
+		
+    		NodeList nList = document.getElementsByTagName("*");
+    		System.out.println("nList size: " + nList.getLength());
+    		
+    		for (int i=0; i<nList.getLength(); i++){
+    			
+    			Node node = nList.item(i);
+    			String nodeName = node.getNodeName();
+    			String nodeVersion;
+    			
+    			if (nodeName.contains("version")){
+    				nodeVersion = node.getTextContent();
+    				if (!nodeVersion.contains("$")){
+    					propList.put(nodeName, nodeVersion);
+    					//System.out.println(nodeName + " : "  + nodeVersion);
+    				}
+    			} else {
+    				nodeName = "";
+    			}
+    		}
+    		
+    	} catch (ParserConfigurationException | SAXException | IOException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    		return null;
+    	}
+    	
+		
+    	return propList;	
+    	
     }
 }
 

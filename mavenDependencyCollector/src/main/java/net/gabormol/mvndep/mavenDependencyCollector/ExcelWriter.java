@@ -60,7 +60,7 @@ public class ExcelWriter
             FileOutputStream out = new FileOutputStream(new File("toplevelDependencies.xlsx"));
             workbook.write(out);
             out.close();
-            System.out.println("toplevelDependencies.xlsx written successfully on disk.");
+            System.out.println("\ntoplevelDependencies.xlsx written successfully on disk.");
         } 
         catch (Exception e) 
         {
