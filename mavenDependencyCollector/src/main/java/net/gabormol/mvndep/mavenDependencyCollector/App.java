@@ -29,11 +29,14 @@ public class App
 						
 			PomReader aPomReader = new PomReader(f);
 			
-			dependencies.addAll(aPomReader.getAllDependenciesFromPom());
 			properties.putAll(aPomReader.getAllPropertiesFromPom());
 			
 		}
 		
+		for (String f : fileNames){
+			PomReader aPomReader = new PomReader(f);
+			dependencies.addAll(aPomReader.getAllDependenciesFromPom());
+		}
 		System.out.println("Dependencies found: " + dependencies.size());
 		
 		dependencies = Utils.removeTestDepencency(dependencies);
@@ -41,7 +44,6 @@ public class App
 		System.out.println("Test dependencies removed, remaining dependencies: " + dependencies.size());
 		
 		dependencies = Utils.removeDuplicates(dependencies);
-		dependencies = Utils.removeWithoutVersion(dependencies);
 		dependencies = Utils.removeInternalComponents(dependencies, internalComponentString);
 		
 		System.out.println("Duplicated dependencies removed, remaining dependencies: " + dependencies.size());

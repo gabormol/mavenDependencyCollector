@@ -92,7 +92,7 @@ public class Utils {
 		return retRes;
 	}
 	
-	public static List<MvnDep> removeWithoutVersion(List<MvnDep> depList){
+	/*public static List<MvnDep> removeWithoutVersion(List<MvnDep> depList){
 		List<MvnDep> nonDuplicatedDependencies = depList.stream()
 				   .filter(dep -> hasVersion(dep))
 				   .collect(Collectors.toList());
@@ -105,7 +105,7 @@ public class Utils {
 		} else {
 			return true;
 		}
-	}
+	}*/
 	
 	public static List<MvnDep> removeInternalComponents(List<MvnDep> depList, String internalPrefix){
 		if (!internalPrefix.isEmpty()){

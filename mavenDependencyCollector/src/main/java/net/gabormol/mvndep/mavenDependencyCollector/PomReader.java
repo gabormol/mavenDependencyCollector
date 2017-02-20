@@ -54,6 +54,8 @@ public class PomReader {
     			Element eElement = (Element) nNode;
     			
     			if (!checkDependencyManagement(eElement)){
+    				
+    				System.out.println("Adding dependency to list...");
 	        
     				String groupId = eElement.getElementsByTagName("groupId").item(0).getTextContent();
     				String artifactId = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
@@ -129,8 +131,10 @@ public class PomReader {
     	boolean retRes = false;
     	
     	if (dependencyElement.getParentNode().getParentNode().getNodeName() == "dependencyManagement"){
+    		System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     		return true;
     	} 
+    	System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     	return retRes;
     }
 }
