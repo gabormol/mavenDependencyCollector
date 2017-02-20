@@ -52,26 +52,29 @@ public class PomReader {
     			MvnDep aDependency = new MvnDep();
 
     			Element eElement = (Element) nNode;
+    			
+    			if (!checkDependencyManagement(eElement)){
 	        
-    			String groupId = eElement.getElementsByTagName("groupId").item(0).getTextContent();
-    			String artifactId = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
-    			String scope;
-    			String version;
+    				String groupId = eElement.getElementsByTagName("groupId").item(0).getTextContent();
+    				String artifactId = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
+    				String scope;
+    				String version;
 	        
-    			if (eElement.getElementsByTagName("scope").item(0) != null){
-    				scope = eElement.getElementsByTagName("scope").item(0).getTextContent();
-    			} else {scope = "";}
+    				if (eElement.getElementsByTagName("scope").item(0) != null){
+    					scope = eElement.getElementsByTagName("scope").item(0).getTextContent();
+    				} else {scope = "";}
 	
-    			if (eElement.getElementsByTagName("version").item(0) != null){
-    				version = eElement.getElementsByTagName("version").item(0).getTextContent();
-    			} else {version = "";}
+    				if (eElement.getElementsByTagName("version").item(0) != null){
+    					version = eElement.getElementsByTagName("version").item(0).getTextContent();
+    				} else {version = "";}
     			
-    			aDependency.setGroupId(groupId);
-    			aDependency.setArtifact(artifactId);
-    			aDependency.setScope(scope);
-    			aDependency.setVersion(version);
+    				aDependency.setGroupId(groupId);
+    				aDependency.setArtifact(artifactId);
+    				aDependency.setScope(scope);
+    				aDependency.setVersion(version);
     			
-    			depList.add(aDependency);
+    				depList.add(aDependency);
+    			}
     		}
     		System.out.println("Found " + depList.size() + " dependencies in: "
     				+ "     " + filePath);
@@ -120,6 +123,15 @@ public class PomReader {
 		
     	return propList;	
     	
+    }
+    
+    private boolean checkDependencyManagement(Element dependencyElement){
+    	boolean retRes = false;
+    	
+    	if (dependencyElement.getParentNode().getParentNode().getNodeName() == "dependencyManagement"){
+    		return true;
+    	} 
+    	return retRes;
     }
 }
 
