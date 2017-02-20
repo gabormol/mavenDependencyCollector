@@ -89,6 +89,22 @@ public class Utils {
 		
 	private static String formatVersion(String versionString){
 		String retRes = versionString.replaceAll("[${}]", "");	
+		//System.out.println("Version: " + retRes);
+		return retRes;
+	}
+	
+	public static List<MvnDep> addVersionFromDepManagement(List<MvnDep> deps, List<MvnDep>depMan){
+		List<MvnDep> retRes = new ArrayList<>();
+		
+		for (MvnDep dep : deps){
+			for (MvnDep dMan : depMan){
+				if(dep.getArtifact() == dMan.getArtifact() && dep.getGroupId() == dMan.getGroupId()){
+					dep.setVersion(dMan.getVersion());
+					retRes.add(dep);
+					
+				}
+			}
+		}
 		return retRes;
 	}
 	
@@ -114,6 +130,12 @@ public class Utils {
 		} else {
 			return depList;
 		}
+	}
+	
+	public static List<MvnDep> selectDependencyManagement (List<MvnDep> depList){
+		return depList.stream()
+				.filter(dep -> !dep.isDepMan())
+				.collect(Collectors.toList());
 	}
 	
 }

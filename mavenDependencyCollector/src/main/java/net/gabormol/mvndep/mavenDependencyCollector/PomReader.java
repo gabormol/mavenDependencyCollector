@@ -54,8 +54,11 @@ public class PomReader {
     			Element eElement = (Element) nNode;
     			
     			if (!checkDependencyManagement(eElement)){
+    				aDependency.setDepMan(true);
+    			
+    			}
     				
-    				System.out.println("Adding dependency to list...");
+    				//System.out.println("Adding dependency to list...");
 	        
     				String groupId = eElement.getElementsByTagName("groupId").item(0).getTextContent();
     				String artifactId = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
@@ -76,7 +79,6 @@ public class PomReader {
     				aDependency.setVersion(version);
     			
     				depList.add(aDependency);
-    			}
     		}
     		System.out.println("Found " + depList.size() + " dependencies in: "
     				+ "     " + filePath);
@@ -97,7 +99,7 @@ public class PomReader {
     		document.getDocumentElement().normalize();
 		
     		NodeList nList = document.getElementsByTagName("*");
-    		System.out.println("nList size: " + nList.getLength());
+    		//System.out.println("nList size: " + nList.getLength());
     		
     		for (int i=0; i<nList.getLength(); i++){
     			
@@ -131,10 +133,10 @@ public class PomReader {
     	boolean retRes = false;
     	
     	if (dependencyElement.getParentNode().getParentNode().getNodeName() == "dependencyManagement"){
-    		System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
+    		//System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     		return true;
     	} 
-    	System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
+    	//System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     	return retRes;
     }
 }

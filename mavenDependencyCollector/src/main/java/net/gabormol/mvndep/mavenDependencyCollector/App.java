@@ -11,8 +11,12 @@ public class App
 {
     public static void main( String[] args )
     {
-    	
-    	String internalComponentString = args[1];
+    	String internalComponentString;
+    	if(args.length>2){
+    		internalComponentString = args[1];
+    	} else {
+    		internalComponentString = "";
+    	}
     	
     	System.out.println("Searching for POM files...");
     	List<String> fileNames = new ArrayList<>();
@@ -46,9 +50,19 @@ public class App
 		dependencies = Utils.removeDuplicates(dependencies);
 		dependencies = Utils.removeInternalComponents(dependencies, internalComponentString);
 		
-		System.out.println("Duplicated dependencies removed, remaining dependencies: " + dependencies.size());
+		System.out.println("Duplicated dependencies and internal components removed, remaining dependencies: " + dependencies.size() + "\n");
 		
 		//System.out.println(properties.toString());
+		
+		List<MvnDep> dependencyManagementDeps = Utils.selectDependencyManagement(dependencies);
+		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);
+		
+		/*for (int i=0; i<dependencyManagementDeps.size(); i++){
+			System.out.println(dependencyManagementDeps.get(i).getGroupId());
+			System.out.println(dependencyManagementDeps.get(i).getArtifact());
+			System.out.println(dependencyManagementDeps.get(i).getVersion());
+			System.out.println(dependencyManagementDeps.get(i).getScope());
+		}*/
 		
 		System.out.println("\nResolved dependency versions: ");
 		
@@ -57,7 +71,9 @@ public class App
 	        System.out.println(dependencyName + " : " + properties.get(dependencyName));
 		} 
 		
-		dependencies = Utils.resolveVersionParameters(dependencies, properties);
+		dependencies = Utils.addVersionFromDepManagement(dependencies, dependencyManagementDeps);
+		
+		//dependencies = Utils.resolveVersionParameters(dependencies, properties);
 		
 		xlsWriter.createExcel(dependencies);
 		

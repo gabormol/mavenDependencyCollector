@@ -5,21 +5,27 @@ public class MvnDep {
 	private String artifact;
 	private String scope;
 	private String version;
-	
+	private boolean depMan = false;
+
 	public MvnDep (){
 		
 	}
 	
-	public MvnDep (String groupId, String artifact, String scope, String version){
+	public MvnDep (String groupId, String artifact, String scope, String version, boolean depMan){
 		this.groupId = groupId;
 		this.artifact = artifact;
 		this.scope = scope;
 		this.version = version;
+		this.depMan = depMan;
 	}
 	
 	// It returns a unique string needed for filtering the duplicates
 	public String compareString(){
-		return groupId+artifact+scope+version;
+		if (depMan == true){
+			return groupId+artifact+scope+version+"depman";
+		} else {
+			return groupId+artifact+scope+version;
+		}
 	}
 	
 	public String getGroupId() {
@@ -52,5 +58,13 @@ public class MvnDep {
 
 	public void setVersion(String version) {
 		this.version = version;
+	}
+	
+	public boolean isDepMan() {
+		return depMan;
+	}
+
+	public void setDepMan(boolean depMan) {
+		this.depMan = depMan;
 	}
 }
