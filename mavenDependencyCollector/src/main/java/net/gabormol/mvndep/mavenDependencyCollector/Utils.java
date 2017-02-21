@@ -95,7 +95,6 @@ public class Utils {
 	}
 	
 	public static List<MvnDep> addVersionFromDepManagement(List<MvnDep> deps, List<MvnDep>depMan){
-		List<MvnDep> retRes = deps;
 		
 		//System.out.println("\nResolving versions... ");
 		
@@ -115,21 +114,6 @@ public class Utils {
 		}
 		return deps;
 	}
-	
-	/*public static List<MvnDep> removeWithoutVersion(List<MvnDep> depList){
-		List<MvnDep> nonDuplicatedDependencies = depList.stream()
-				   .filter(dep -> hasVersion(dep))
-				   .collect(Collectors.toList());
-		return nonDuplicatedDependencies;
-	}
-	
-	private static boolean hasVersion(MvnDep dependency){
-		if (dependency.getVersion().isEmpty()){
-			return false;
-		} else {
-			return true;
-		}
-	}*/
 	
 	public static List<MvnDep> removeInternalComponents(List<MvnDep> depList, String internalPrefix){
 		if (!internalPrefix.isEmpty()){
