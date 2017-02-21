@@ -12,7 +12,7 @@ public class App
     public static void main( String[] args )
     {
     	String internalComponentString;
-    	if(args.length>2){
+    	if(args.length == 2){
     		internalComponentString = args[1];
     	} else {
     		internalComponentString = "";
@@ -55,6 +55,8 @@ public class App
 		//System.out.println(properties.toString());
 		
 		List<MvnDep> dependencyManagementDeps = Utils.selectDependencyManagement(dependencies);
+		dependencies = Utils.removeDependencyManagement(dependencies);
+		System.out.println("Dependencies without DM: " + dependencies.size());
 		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);
 		
 		/*for (int i=0; i<dependencyManagementDeps.size(); i++){

@@ -94,18 +94,25 @@ public class Utils {
 	}
 	
 	public static List<MvnDep> addVersionFromDepManagement(List<MvnDep> deps, List<MvnDep>depMan){
-		List<MvnDep> retRes = new ArrayList<>();
+		List<MvnDep> retRes = deps;
+		
+		//System.out.println("\nResolving versions... ");
 		
 		for (MvnDep dep : deps){
+			String artifact = dep.getArtifact();
+			String groupId = dep.getGroupId();
+			String version = "";
+			
 			for (MvnDep dMan : depMan){
-				if(dep.getArtifact() == dMan.getArtifact() && dep.getGroupId() == dMan.getGroupId()){
-					dep.setVersion(dMan.getVersion());
-					retRes.add(dep);
-					
+				if(dMan.getArtifact().matches(artifact) && dMan.getGroupId().matches(groupId)){
+					version = dMan.getVersion();
+					//System.out.println("Version found: " + version);
+					break;
 				}
 			}
+			dep.setVersion(version);
 		}
-		return retRes;
+		return deps;
 	}
 	
 	/*public static List<MvnDep> removeWithoutVersion(List<MvnDep> depList){
@@ -135,6 +142,12 @@ public class Utils {
 	public static List<MvnDep> selectDependencyManagement (List<MvnDep> depList){
 		return depList.stream()
 				.filter(dep -> !dep.isDepMan())
+				.collect(Collectors.toList());
+	}
+	
+	public static List<MvnDep> removeDependencyManagement (List<MvnDep> depList){
+		return depList.stream()
+				.filter(dep -> dep.isDepMan())
 				.collect(Collectors.toList());
 	}
 	
