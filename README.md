@@ -9,13 +9,13 @@ The input is the path to your project, the output will be a basic excel file wit
 <li> java -jar &ltyour_jar_file_name_.jar&gt &ltpath_to_your_project&gt <i>&ltstringpattern_for_match_removals&gt</i> </li>
 </ol>
 
-Example 1:
+<h4>Example 1:</h4>
 
-java -jar checkProductionDependencies.jar c:\My_project_sources\ 
+<code>java -jar checkProductionDependencies.jar c:\My_project_sources\ </code>
 
-Example 2:
+<h4>Example 2:</h4>
 
-java -jar checkProductionDependencies.jar c:\My_project_sources\ myProjectSpecificThings
+<code>java -jar checkProductionDependencies.jar c:\My_project_sources\ myProjectSpecificThings </code>
 
 Have fun, any comments are welcome!
 
