@@ -18,65 +18,56 @@ public class App
     		internalComponentString = "";
     	}
     	
-    	System.out.println("Searching for POM files...");
-    	List<String> fileNames = new ArrayList<>();
-		fileNames = Utils.getFileNames(fileNames, Paths.get(args[0]));
-		
+    	if (args.length==0){
+    		System.out.println("Please specify at least a path!");
+    		return;
+    	}
+    	
+    	// Getting the list of POM files to look into
+    	List<String> fileNames = Utils.findPomFiles(args[0]);	
 		System.out.println("\nPOM files found: " + fileNames.size());
 		
-		List<MvnDep> dependencies = new ArrayList<>();
-		Map<String, String> properties = new HashMap<>();
+		List<MvnDep> dependencies = new ArrayList<>(); // for storing dependencies
+		Map<String, String> properties = new HashMap<>(); // for storing property values
 		
-		ExcelWriter xlsWriter = new ExcelWriter();
+		ExcelWriter xlsWriter = new ExcelWriter(); // excel writer
 		
-		for (String f : fileNames){
-						
-			PomReader aPomReader = new PomReader(f);
-			
-			properties.putAll(aPomReader.getAllPropertiesFromPom());
-			
-		}
+		// Collecting the properties and their values
+		properties = Utils.collectPropertiesFromFiles(fileNames);
 		
-		for (String f : fileNames){
-			PomReader aPomReader = new PomReader(f);
-			dependencies.addAll(aPomReader.getAllDependenciesFromPom());
-		}
-		System.out.println("Dependencies found: " + dependencies.size());
+		// Collecting the all the dependencies (dependencyManagement included)
+		dependencies = Utils.collectDependenciesFromFiles(fileNames);		
+		System.out.println("\nDependencies found: " + dependencies.size());
 		
+		// Removing test dependencies
 		dependencies = Utils.removeTestDepencency(dependencies);
+		System.out.println("\nTest dependencies removed, remaining dependencies: " + dependencies.size());
 		
-		System.out.println("Test dependencies removed, remaining dependencies: " + dependencies.size());
-		
+		//Removing duplicated dependencies
 		dependencies = Utils.removeDuplicates(dependencies);
-		dependencies = Utils.removeInternalComponents(dependencies, internalComponentString);
-		
+		// Removing dependencies containing the internal component string
+		dependencies = Utils.removeInternalComponents(dependencies, internalComponentString);		
 		System.out.println("Duplicated dependencies and internal components removed, remaining dependencies: " + dependencies.size() + "\n");
 		
-		//System.out.println(properties.toString());
-		
+		// Creating dependencyManagement list
 		List<MvnDep> dependencyManagementDeps = Utils.selectDependencyManagement(dependencies);
+		
+		// Removing dependencyManagement items from the dependencies (We don't have to list them)
 		dependencies = Utils.removeDependencyManagement(dependencies);
-		System.out.println("Dependencies without DM: " + dependencies.size());
-		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);
+		System.out.println("\ndependencyManagement items removed, remaining dependencies: " + dependencies.size());
 		
-		/*for (int i=0; i<dependencyManagementDeps.size(); i++){
-			System.out.println(dependencyManagementDeps.get(i).getGroupId());
-			System.out.println(dependencyManagementDeps.get(i).getArtifact());
-			System.out.println(dependencyManagementDeps.get(i).getVersion());
-			System.out.println(dependencyManagementDeps.get(i).getScope());
-		}*/
-		
-		System.out.println("\nResolved dependency versions: ");
-		
+		// Resolve versions of the dependencies in the dependencyManagement list
+		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);	
+		System.out.println("\nResolved dependencies from dependencyManagement: ");
 		for (String dependencyName: properties.keySet()){
 
 	        System.out.println(dependencyName + " : " + properties.get(dependencyName));
 		} 
 		
+		// Adding version info to dependencies
 		dependencies = Utils.addVersionFromDepManagement(dependencies, dependencyManagementDeps);
 		
-		//dependencies = Utils.resolveVersionParameters(dependencies, properties);
-		
+		// Write the remaining dependencies in Excel
 		xlsWriter.createExcel(dependencies);
 		
     }

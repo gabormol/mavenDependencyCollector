@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -151,4 +152,35 @@ public class Utils {
 				.collect(Collectors.toList());
 	}
 	
+	public static List<String> findPomFiles(String path){
+		System.out.println("Searching for POM files...");
+    	List<String> fileNames = new ArrayList<>();
+		fileNames = getFileNames(fileNames, Paths.get(path));
+		return fileNames;
+	}
+	
+	public static Map<String, String> collectPropertiesFromFiles(List<String> fileNames){
+		
+		Map<String, String> properties = new HashMap<String, String>();
+		
+		for (String f : fileNames){
+			
+			PomReader aPomReader = new PomReader(f);
+			
+			properties.putAll(aPomReader.getAllPropertiesFromPom());
+			
+		}
+		return properties;
+	}
+	
+	public static List<MvnDep> collectDependenciesFromFiles(List<String> fileNames){
+		List<MvnDep> dependencies = new ArrayList<>();
+		
+		for (String f : fileNames){
+			PomReader aPomReader = new PomReader(f);
+			dependencies.addAll(aPomReader.getAllDependenciesFromPom());
+		}
+		
+		return dependencies;
+	}
 }
