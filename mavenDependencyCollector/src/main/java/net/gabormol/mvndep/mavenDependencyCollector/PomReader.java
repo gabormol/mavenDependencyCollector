@@ -78,7 +78,9 @@ public class PomReader {
     				aDependency.setScope(scope);
     				aDependency.setVersion(version);
     			
-    				depList.add(aDependency);
+    				if (!checkPluginDependency(eElement)){
+    					depList.add(aDependency);
+    				}
     		}
     		System.out.println("Found " + depList.size() + " dependencies in: "
     				+ "     " + filePath);
@@ -136,7 +138,16 @@ public class PomReader {
     		//System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     		return true;
     	} 
-    	//System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
+    	return retRes;
+    }
+    
+    private boolean checkPluginDependency(Element dependencyElement){
+    	boolean retRes = false;
+    	
+    	if (dependencyElement.getParentNode().getParentNode().getNodeName() == "plugin"){
+    		//System.out.println("Grandparent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
+    		return true;
+    	} 
     	return retRes;
     }
 }
