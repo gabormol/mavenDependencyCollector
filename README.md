@@ -6,7 +6,7 @@ The input is the path to your project, the output will be a basic excel file wit
 <h3>Usage:</h3>
 <ol>
 <li> Create an executable jar file</li>
-<li> java -jar &ltyour_jar_file_name_.jar&gt &ltpath_to_your_project&gt <i>&ltstringpattern_for_match_removals&gt</i> </li>
+<li> <code>java -jar &lttyour_jar_file_name_.jar&gt &lttpath_to_your_project&gt &ltstringpattern_for_match_removals&gt </code> </li>
 </ol>
 
 <h4>Example 1:</h4>
