@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -77,6 +78,7 @@ public class PomReader {
     				aDependency.setArtifact(artifactId);
     				aDependency.setScope(scope);
     				aDependency.setVersion(version);
+    				aDependency.setProjectArtifactId(getProjectArtifactId(eElement));
     			
     				if (!checkPluginDependency(eElement)){
     					depList.add(aDependency);
@@ -148,6 +150,46 @@ public class PomReader {
     		//System.out.println("Grandparent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     		return true;
     	} 
+    	return retRes;
+    }
+    
+    private String getProjectArtifactId(Element element){
+    	String retRes = "";
+    	Node aNode = element.getParentNode();
+    	String parentNodeName = aNode.getNodeName();
+    	
+    	while (!parentNodeName.equals("project")){  
+    		//System.out.println("We are in: " + aNode.getNodeName() + " moving to parent Node");
+    		aNode = aNode.getParentNode();
+    		//System.out.println("We are in: " + aNode.getNodeName());
+    		if (aNode != null){
+    			parentNodeName = aNode.getNodeName();
+    		} 
+    	}
+    	//System.out.println("Exited from cycle...");
+    	//System.out.println("We are in: " + aNode.getNodeName());
+    	Node firstRealChild = aNode.getFirstChild().getNextSibling();
+    	
+    	if (aNode.getNodeName().equals("project")){
+    		//System.out.println("First real child: " + firstRealChild.getNodeName());
+    		while(!firstRealChild.getNodeName().equals("artifactId")){
+    			firstRealChild = firstRealChild.getNextSibling().getNextSibling();
+    			if (firstRealChild != null){
+    				//System.out.println("Next child found: " + firstRealChild.getNodeName());
+    				if (firstRealChild.getNodeName().equals("artifactId")){
+    					//System.out.println("Found value: " + firstRealChild.getTextContent());
+    					retRes = firstRealChild.getTextContent();
+    				}
+    			} else {
+    				retRes = "not found";
+    				break;
+    			}
+    		}
+    		
+    	} else {
+    		retRes = "not found";
+    	}
+    	System.out.println("Project's artifactId: " + retRes);
     	return retRes;
     }
 }

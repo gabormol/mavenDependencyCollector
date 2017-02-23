@@ -6,10 +6,7 @@ public class MvnDep {
 	private String scope;
 	private String version;
 	private boolean depMan = false;
-
-	public MvnDep (){
-		
-	}
+	private String projectArtifactId;
 	
 	public MvnDep (String groupId, String artifact, String scope, String version, boolean depMan){
 		this.groupId = groupId;
@@ -66,5 +63,17 @@ public class MvnDep {
 
 	public void setDepMan(boolean depMan) {
 		this.depMan = depMan;
+	}
+	
+	public String getProjectArtifactId() {
+		return projectArtifactId;
+	}
+
+	public void setProjectArtifactId(String projectArtifactId) {
+		this.projectArtifactId = projectArtifactId;
+	}
+
+	public MvnDep (){
+		
 	}
 }
