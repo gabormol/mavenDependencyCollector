@@ -2,6 +2,12 @@ package net.gabormol.mvndep.mavenDependencyCollector;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,11 +62,18 @@ public class ExcelWriter
         }
         try
         {
+        	DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        	
+        	String datetimeString = LocalDateTime.now().format(formatter); 
+            
+            String xlsFileName = new String("toplevelDependencies_" + datetimeString + ".xlsx");
+        	
             //Write the workbook in file system
-            FileOutputStream out = new FileOutputStream(new File("toplevelDependencies.xlsx"));
+            FileOutputStream out = new FileOutputStream(new File(xlsFileName));
             workbook.write(out);
             out.close();
-            System.out.println("\ntoplevelDependencies.xlsx written successfully on disk.");
+            System.out.println("\n" + xlsFileName + "written successfully on disk.");
         } 
         catch (Exception e) 
         {
