@@ -58,8 +58,6 @@ public class PomReader {
     				aDependency.setDepMan(true);
     			
     			}
-    				
-    				//System.out.println("Adding dependency to list...");
 	        
     				String groupId = eElement.getElementsByTagName("groupId").item(0).getTextContent();
     				String artifactId = eElement.getElementsByTagName("artifactId").item(0).getTextContent();
@@ -103,7 +101,6 @@ public class PomReader {
     		document.getDocumentElement().normalize();
 		
     		NodeList nList = document.getElementsByTagName("*");
-    		//System.out.println("nList size: " + nList.getLength());
     		
     		for (int i=0; i<nList.getLength(); i++){
     			
@@ -115,7 +112,6 @@ public class PomReader {
     				nodeVersion = node.getTextContent();
     				if (!nodeVersion.contains("$")){
     					propList.put(nodeName, nodeVersion);
-    					//System.out.println(nodeName + " : "  + nodeVersion);
     				}
     			} else {
     				nodeName = "";
@@ -137,7 +133,6 @@ public class PomReader {
     	boolean retRes = false;
     	
     	if (dependencyElement.getParentNode().getParentNode().getNodeName() == "dependencyManagement"){
-    		//System.out.println("Grandpatent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     		return true;
     	} 
     	return retRes;
@@ -147,7 +142,6 @@ public class PomReader {
     	boolean retRes = false;
     	
     	if (dependencyElement.getParentNode().getParentNode().getNodeName() == "plugin"){
-    		//System.out.println("Grandparent name: " + dependencyElement.getParentNode().getParentNode().getNodeName());
     		return true;
     	} 
     	return retRes;
@@ -159,25 +153,19 @@ public class PomReader {
     	String parentNodeName = aNode.getNodeName();
     	
     	while (!parentNodeName.equals("project")){  
-    		//System.out.println("We are in: " + aNode.getNodeName() + " moving to parent Node");
     		aNode = aNode.getParentNode();
-    		//System.out.println("We are in: " + aNode.getNodeName());
     		if (aNode != null){
     			parentNodeName = aNode.getNodeName();
     		} 
     	}
-    	//System.out.println("Exited from cycle...");
-    	//System.out.println("We are in: " + aNode.getNodeName());
+    	
     	Node firstRealChild = aNode.getFirstChild().getNextSibling();
     	
     	if (aNode.getNodeName().equals("project")){
-    		//System.out.println("First real child: " + firstRealChild.getNodeName());
     		while(!firstRealChild.getNodeName().equals("artifactId")){
     			firstRealChild = firstRealChild.getNextSibling().getNextSibling();
     			if (firstRealChild != null){
-    				//System.out.println("Next child found: " + firstRealChild.getNodeName());
     				if (firstRealChild.getNodeName().equals("artifactId")){
-    					//System.out.println("Found value: " + firstRealChild.getTextContent());
     					retRes = firstRealChild.getTextContent();
     				}
     			} else {
@@ -189,7 +177,6 @@ public class PomReader {
     	} else {
     		retRes = "not found";
     	}
-    	System.out.println("Project's artifactId: " + retRes);
     	return retRes;
     }
 }

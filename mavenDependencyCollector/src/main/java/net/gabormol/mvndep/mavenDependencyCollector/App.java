@@ -12,7 +12,13 @@ public class App
     public static void main( String[] args )
     {
     	String internalComponentString;
-    	if(args.length == 2){
+    	String testArtifacts;
+    	List<String> testArtifactIds = new ArrayList<>();
+    	if(args.length == 3){
+    		testArtifacts = args[2];
+    		testArtifactIds = Utils.separateTestArtifactsString(testArtifacts);
+    		internalComponentString = args[1];
+    	} else if(args.length == 2){
     		internalComponentString = args[1];
     	} else {
     		internalComponentString = "";
@@ -55,6 +61,23 @@ public class App
 		// Removing dependencyManagement items from the dependencies (We don't have to list them)
 		dependencies = Utils.removeDependencyManagement(dependencies);
 		System.out.println("\ndependencyManagement items removed, remaining dependencies: " + dependencies.size());
+		
+		for (MvnDep dep : dependencies){
+			System.out.println("Project's artifactId: " + dep.getProjectArtifactId());
+		}
+		
+		// Removing dependencies inside test-only artifact
+		System.out.println("Test artifacts: " + testArtifactIds);
+		if (!testArtifactIds.isEmpty()){
+			List<MvnDep> depNoTest = new ArrayList<>();
+			for (MvnDep dep : dependencies){
+				if(!testArtifactIds.contains(dep.getProjectArtifactId())){
+					depNoTest.add(dep);
+				}
+			}
+			dependencies = depNoTest;
+		}
+		
 		
 		// Resolve versions of the dependencies in the dependencyManagement list
 		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);	

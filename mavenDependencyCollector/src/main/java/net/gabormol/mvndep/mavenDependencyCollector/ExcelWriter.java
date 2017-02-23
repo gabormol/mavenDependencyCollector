@@ -35,11 +35,11 @@ public class ExcelWriter
           
         //This data needs to be written (Object[])
         Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        data.put("1", new Object[] {"groupID", "artifactId", "version", "scope"});
+        data.put("1", new Object[] {"groupID", "artifactId", "version", "scope", "project's artifactId"});
         int rowId = 2;
         for (MvnDep dep : anInputData){
         	data.put(new Integer(rowId).toString(), new Object[] 
-        			{dep.getGroupId(), dep.getArtifact(), dep.getVersion(), dep.getScope()});
+        			{dep.getGroupId(), dep.getArtifact(), dep.getVersion(), dep.getScope(), dep.getProjectArtifactId()});
         	rowId++;
         }
           
