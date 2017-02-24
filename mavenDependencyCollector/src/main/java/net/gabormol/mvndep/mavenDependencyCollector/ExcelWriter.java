@@ -73,7 +73,7 @@ public class ExcelWriter
             FileOutputStream out = new FileOutputStream(new File(xlsFileName));
             workbook.write(out);
             out.close();
-            System.out.println("\n" + xlsFileName + "written successfully on disk.");
+            System.out.println("\n" + xlsFileName + " written successfully on disk.");
         } 
         catch (Exception e) 
         {
