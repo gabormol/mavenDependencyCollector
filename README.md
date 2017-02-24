@@ -6,7 +6,7 @@ The input is the path to your project, the output will be a basic excel file wit
 <h3>Usage:</h3>
 <ol>
 <li> Create an executable jar file</li>
-<li> <code>java -jar &lttyour_jar_file_name_.jar&gt &lttpath_to_your_project&gt &ltstringpattern_for_match_removals&gt </code> </li>
+<li> <code>java -jar &lttyour_jar_file_name_.jar&gt &lttpath_to_your_project&gt &ltstringpattern_for_match_removals&gt &ltproject_artifactId-s_of_dependencies_not_needed_to display&gt</code> </li>
 </ol>
 
 <h4>Example 1:</h4>
@@ -16,6 +16,10 @@ The input is the path to your project, the output will be a basic excel file wit
 <h4>Example 2:</h4>
 
 <code>java -jar checkProductionDependencies.jar c:\My_project_sources\ myProjectSpecificThings </code>
+
+<h4>Example 3:</h4>
+
+<code>java -jar checkProductionDependencies.jar c:\My_project_sources\ myProjectSpecificThings artifact-id1,artifact-id2</code>
 
 Have fun, any comments are welcome!
 
