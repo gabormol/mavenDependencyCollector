@@ -14,8 +14,9 @@ public class App
     	String internalComponentString;
     	String testArtifacts;
     	List<String> testArtifactIds = new ArrayList<>();
-    	if(args.length == 3){
+    	if(args.length >= 3){
     		testArtifacts = args[2];
+    		testArtifacts.replaceAll("\\s+",""); // removing whitespaces
     		testArtifactIds = Utils.separateTestArtifactsString(testArtifacts);
     		internalComponentString = args[1];
     	} else if(args.length == 2){
@@ -62,25 +63,20 @@ public class App
 		dependencies = Utils.removeDependencyManagement(dependencies);
 		System.out.println("\ndependencyManagement items removed, remaining dependencies: " + dependencies.size());
 		
-		for (MvnDep dep : dependencies){
+		/*for (MvnDep dep : dependencies){
 			System.out.println("Project's artifactId: " + dep.getProjectArtifactId());
-		}
+		}*/
 		
-		// Removing dependencies inside test-only artifact
-		System.out.println("Test artifacts: " + testArtifactIds);
-		if (!testArtifactIds.isEmpty()){
-			List<MvnDep> depNoTest = new ArrayList<>();
-			for (MvnDep dep : dependencies){
-				if(!testArtifactIds.contains(dep.getProjectArtifactId())){
-					depNoTest.add(dep);
-				}
-			}
-			dependencies = depNoTest;
-		}
+		if(!testArtifactIds.isEmpty()){
+			// Removing dependencies inside test-only artifact
+			dependencies = Utils.removeDependenciesByProjectArtifact(dependencies, testArtifactIds);
 		
+			System.out.println("\nDependencies with the requested project artifactId-s removed, remaining dependencies: " + dependencies.size());
+		}
 		
 		// Resolve versions of the dependencies in the dependencyManagement list
-		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);	
+		dependencyManagementDeps = Utils.resolveVersionParameters(dependencyManagementDeps, properties);
+		
 		System.out.println("\nResolved dependencies from dependencyManagement: ");
 		for (String dependencyName: properties.keySet()){
 

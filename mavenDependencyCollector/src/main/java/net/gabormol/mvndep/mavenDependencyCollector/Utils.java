@@ -172,4 +172,22 @@ public class Utils {
 	public static List<String> separateTestArtifactsString(String string){
 		return Arrays.asList(string.split(","));
 	}
+	
+	public static List<MvnDep> removeDependenciesByProjectArtifact(List<MvnDep> dependencies, 
+			List<String> artifactsToRemove){
+		List<MvnDep> retRes = dependencies;
+		
+		for (String artifactToRemove : artifactsToRemove){
+			retRes = removeDependencyWithAnArtifactId(retRes, artifactToRemove);
+			
+		}
+		return retRes;
+		
+	}
+	
+	private static List<MvnDep> removeDependencyWithAnArtifactId (List<MvnDep> depList, String artifactId){
+		return depList.stream()
+				.filter(dep -> !dep.getProjectArtifactId().equals(artifactId))
+				.collect(Collectors.toList());
+	}
 }
