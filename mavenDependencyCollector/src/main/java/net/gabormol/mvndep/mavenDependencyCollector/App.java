@@ -86,6 +86,9 @@ public class App
 		// Adding version info to dependencies
 		dependencies = Utils.addVersionFromDepManagement(dependencies, dependencyManagementDeps);
 		
+		// Sort the result alphabetically
+		dependencies = Utils.sortAlphabetical(dependencies);
+		
 		// Write the remaining dependencies in Excel
 		xlsWriter.createExcel(dependencies);
 		

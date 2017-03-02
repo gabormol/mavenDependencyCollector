@@ -8,10 +8,12 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -35,18 +37,27 @@ public class ExcelWriter
           
         //This data needs to be written (Object[])
         Map<String, Object[]> data = new TreeMap<String, Object[]>();
-        data.put("1", new Object[] {"groupID", "artifactId", "version", "scope", "project's artifactId"});
+        data.put("1", new Object[] {"artifactId", "groupID", "version", "scope", "project's artifactId"});
         int rowId = 2;
         for (MvnDep dep : anInputData){
         	data.put(new Integer(rowId).toString(), new Object[] 
-        			{dep.getGroupId(), dep.getArtifact(), dep.getVersion(), dep.getScope(), dep.getProjectArtifactId()});
+        			{dep.getArtifact(), dep.getGroupId(), dep.getVersion(), dep.getScope(), dep.getProjectArtifactId()});
         	rowId++;
         }
           
         //Iterate over data and write to sheet
         Set<String> keyset = data.keySet();
+        //There's a little bug in this, because the key set looks like [1, 10, 11, 12, 2, 3...]
+        //So we will convert the Set<String> to List<String>, but ordered by int value
+        List<String> keySetUnchanged = keyset
+        		.stream()
+        		.map(s->Integer.parseInt(s))
+        		.collect(Collectors.toSet())
+        		.stream()
+        		.map(i->String.valueOf(i))
+        		.collect(Collectors.toList());
         int rownum = 0;
-        for (String key : keyset)
+        for (String key : keySetUnchanged)
         {
             Row row = sheet.createRow(rownum++);
             Object [] objArr = data.get(key);

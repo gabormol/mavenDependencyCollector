@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -189,5 +190,21 @@ public class Utils {
 		return depList.stream()
 				.filter(dep -> !dep.getProjectArtifactId().equals(artifactId))
 				.collect(Collectors.toList());
+	}
+	
+	public static List<MvnDep> sortAlphabetical(List<MvnDep> list){
+		List<MvnDep> retRes = new ArrayList<>();
+		
+		//There are several alternatives to sort the List, both are working
+		// Alt #1
+		/*retRes = list.stream().sorted((d1, d2) -> (d1.getGroupId().compareTo(d2.getGroupId()))) 
+				.collect(Collectors.toList()); */
+		// Alt #2
+		retRes = list.stream().sorted(
+                Comparator.comparing(n->n.getArtifact().toLowerCase())).collect(Collectors.toList());
+		// Alt #3
+		/*list.sort(Comparator.comparing(MvnDep::getGroupId));
+		retRes = list;*/
+		return retRes;
 	}
 }
